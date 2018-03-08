@@ -1,0 +1,45 @@
+@mixin util-box-shadow($props) {
+  -webkit-box-shadow: $props;
+     -moz-box-shadow: $props;
+      -ms-box-shadow: $props;
+          box-shadow: $props;
+}
+
+@mixin util-box-shadow2($props1, $props2) {
+  -webkit-box-shadow: $props1, $props2;
+     -moz-box-shadow: $props1, $props2;
+      -ms-box-shadow: $props1, $props2;
+          box-shadow: $props1, $props2;
+}
+
+@mixin util-user-select($props) {
+  -webkit-user-select: $props;
+     -moz-user-select: $props;
+      -ms-user-select: $props;
+          user-select: $props;
+}
+
+@mixin util-transition($props) {
+  -webkit-transition: $props;
+     -moz-transition: $props;
+          transition: $props;
+}
+
+@mixin util-transition2($props1, $props2) {
+  -webkit-transition: $props1, $props2;
+     -moz-transition: $props1, $props2;
+          transition: $props1, $props2;
+}
+
+@mixin util-transition3($props1, $props2, $props3) {
+  -webkit-transition: $props1, $props2, $props3;
+     -moz-transition: $props1, $props2, $props3;
+          transition: $props1, $props2, $props3;
+}
+
+@mixin util-transform($props) {
+  -webkit-transform: $props;
+     -moz-transform: $props;
+      -ms-transform: $props;
+          transform: $props;
+}

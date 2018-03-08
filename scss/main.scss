@@ -1,3 +1,5 @@
+@import 'util';
+
 body, html {
   font-family:'Helvetica-Neue',helvetica,sans-serif;
   font-size:14px;
@@ -9,4 +11,173 @@ body, html {
 
 * {
   box-sizing:border-box;
+}
+
+.shepard {
+  margin:auto;
+
+  //display:flex;
+  //justify-content:space-around;
+}
+
+.control-area {
+  background-color:#000;
+  padding:1rem 2rem;
+  &::after {
+    clear:both;
+    content:'';
+    display:table;
+  }
+}
+
+.output, .tones-group {
+  background-color:rgb(38,38,38);
+  border:1px solid #333;
+  border-radius:0.3rem;
+  float:left;
+  .label {
+    border-bottom:1px solid #444;
+    color:#ddd;
+    font-size:0.8rem;
+    font-weight:300;
+    padding:0.3rem 0;
+    text-align:center;
+  }
+  .controls {
+    border-top:1px solid #333;
+    display:flex;
+    justify-content:space-around;
+    padding-bottom:1rem;
+  }
+}
+
+.output {
+  .controls {
+    padding-left:2rem;
+    padding-right:2rem;
+  }
+  .tone-control-vol {
+    .knob, .fill {
+      background-color:orange;
+    }
+  }
+}
+
+.tones {
+  float:left;
+  width:85%;
+}
+
+.tones-group {
+  width:45%;
+  &:first-child {
+    margin-right:5%;
+  }
+}
+
+.tone-control {
+  display:inline-block;
+  position:relative;
+  user-select:none;
+  .track {
+    background-color:rgba(255,255,255,0.2);
+    border-style:solid;
+    border-color:rgba(255,255,255,0.7);
+    @include util-box-shadow(1px 0 3px 2px rgba(255,255,255,0.1) inset);
+    left:0;
+    position:absolute;
+    top:0;
+  }
+  .knob {
+    background-color:#fff;
+    border-style:solid;
+    border-color:#fff;
+    @include util-box-shadow(1px 1px 3px 2px rgba(255,255,255,0.2) inset);
+    position:absolute;
+    @include util-transition(background-color 0.15s ease-in);
+  }
+  .fill {
+    background-color:#f2f2f2;
+    opacity:0.5;
+    position:absolute;
+  }
+  /*&.tone-control-0 {
+    .knob, .fill {
+      background-color:mediumseagreen;
+    }
+    .knob:hover {
+      background-color:lighten(mediumseagreen, 5%);
+    }
+  }
+  &.tone-control-1 {
+    .knob, .fill {
+      background-color:tomato;
+    }
+    .knob:hover {
+      background-color:lighten(tomato, 5%);
+    }
+  }
+  &.tone-control-2 {
+    .knob, .fill {
+      background-color:dodgerblue;
+    }
+    .knob:hover {
+      background-color:lighten(dodgerblue, 5%);
+    }
+  }
+  &.tone-control-3 {
+    .knob, .fill {
+      background-color:orange;
+    }
+    .knob:hover {
+      background-color:lighten(orange, 5%);
+    }
+  }*/
+}
+
+.tones-up {
+  .tone-control-0 {
+    .knob, .fill {
+      background-color:darken(dodgerblue, 20%);
+    }
+  }
+  .tone-control-1 {
+    .knob, .fill {
+      background-color:darken(dodgerblue, 10%);
+    }
+  }
+  .tone-control-2 {
+    .knob, .fill {
+      background-color:dodgerblue;
+    }
+  }
+  .tone-control-3 {
+    .knob, .fill {
+      background-color:lighten(dodgerblue, 10%);
+    }
+  }
+}
+
+
+.tones-down {
+  .tone-control-0 {
+    .knob, .fill {
+      background-color:darken(mediumseagreen, 20%);
+    }
+  }
+  .tone-control-1 {
+    .knob, .fill {
+      background-color:darken(mediumseagreen, 10%);
+    }
+  }
+  .tone-control-2 {
+    .knob, .fill {
+      background-color:mediumseagreen;
+    }
+  }
+  .tone-control-3 {
+    .knob, .fill {
+      background-color:lighten(mediumseagreen, 10%);
+    }
+  }
 }
