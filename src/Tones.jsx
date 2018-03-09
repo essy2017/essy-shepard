@@ -151,6 +151,7 @@ export default class Tones extends React.Component {
               this.oscGroups.slice(0, count).map( (g, i) =>
                 <ToneControl
                   className={'tone-control-' + i}
+                  color={props.colors[i]}
                   domain={[0, 1]}
                   key={i}
                   height={props.ctrlHeight}
@@ -169,6 +170,7 @@ export default class Tones extends React.Component {
               this.oscGroups.slice(count).map( (g, i) =>
                 <ToneControl
                   className={'tone-control-' + i}
+                  color={props.colors[count + i]}
                   domain={[0, 1]}
                   key={i}
                   height={props.ctrlHeight}
@@ -194,6 +196,7 @@ export default class Tones extends React.Component {
  */
 Tones.propTypes = {
   baseFrequency : PropTypes.number.isRequired,
+  colors        : PropTypes.array.isRequired,
   components    : PropTypes.number.isRequired,
   ctrlHeight    : PropTypes.number.isRequired,
   ctrlWidth     : PropTypes.number.isRequired,

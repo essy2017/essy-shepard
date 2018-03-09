@@ -33,7 +33,8 @@ body, html {
     font-size: 0.8rem;
     font-weight: 300;
     padding: 0.3rem 0 0.5rem 0;
-    text-align: center; }
+    text-align: center;
+    text-transform: uppercase; }
   .output .controls, .tones-group .controls {
     display: flex;
     justify-content: space-around;
@@ -52,25 +53,27 @@ body, html {
   float: left; }
 
 .btn-area {
-  padding-bottom: 1rem;
+  background-color: #444;
+  padding: 0.8rem 0;
   text-align: center; }
   .btn-area button {
-    background-color: #777;
-    border: 2px solid #777;
-    border-radius: 0.3rem;
-    color: #eee;
-    font-size: 1rem;
+    background-color: #999;
+    border: none;
+    font-size: 0.8rem;
     outline: none;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
     width: 100px;
     -webkit-transition: all 0.15s ease-in;
     -moz-transition: all 0.15s ease-in;
     transition: all 0.15s ease-in; }
     .btn-area button:hover {
-      background-color: #555;
-      border-color: #555; }
+      background-color: #aaa; }
     .btn-area button:focus {
-      border-color: dodgerblue; }
+      -webkit-box-shadow: 0 0 0 2px dodgerblue;
+      -moz-box-shadow: 0 0 0 2px dodgerblue;
+      -ms-box-shadow: 0 0 0 2px dodgerblue;
+      box-shadow: 0 0 0 2px dodgerblue; }
 
 /* ToneControl.jsx sliders. */
 .tone-control {
@@ -111,64 +114,11 @@ body, html {
 .volume .knob:hover {
   background-color: #ffae1a; }
 
-.tones-up .tone-control-0 .knob, .tones-up .tone-control-0 .fill {
-  background-color: #005db7; }
-.tones-up .tone-control-1 .knob, .tones-up .tone-control-1 .fill {
-  background-color: #0077ea; }
-.tones-up .tone-control-2 .knob, .tones-up .tone-control-2 .fill {
-  background-color: dodgerblue; }
-.tones-up .tone-control-3 .knob, .tones-up .tone-control-3 .fill {
-  background-color: #51a9ff; }
-
-.tones-down .tone-control-0 .knob, .tones-down .tone-control-0 .fill {
-  background-color: #226741; }
-.tones-down .tone-control-1 .knob, .tones-down .tone-control-1 .fill {
-  background-color: #2f8d59; }
-.tones-down .tone-control-2 .knob, .tones-down .tone-control-2 .fill {
-  background-color: mediumseagreen; }
-.tones-down .tone-control-3 .knob, .tones-down .tone-control-3 .fill {
-  background-color: #5ac88b; }
-
 .viz-area {
   padding-bottom: 1rem;
   position: relative; }
-  .viz-area .box {
-    background-color: #fff;
-    border-radius: 3px;
-    height: 6px;
-    position: absolute;
-    width: 6px; }
-    .viz-area .box.box-0 {
-      background-color: #005db7; }
-    .viz-area .box.box-1 {
-      background-color: #0077ea; }
-    .viz-area .box.box-2 {
-      background-color: dodgerblue; }
-    .viz-area .box.box-3 {
-      background-color: #51a9ff; }
-    .viz-area .box.box-4 {
-      background-color: #226741; }
-    .viz-area .box.box-5 {
-      background-color: #2f8d59; }
-    .viz-area .box.box-6 {
-      background-color: mediumseagreen; }
-    .viz-area .box.box-7 {
-      background-color: #5ac88b; }
-
-.tone-viz .bar {
-  background-color: #fff;
-  opacity: 0.1; }
-
-.tone-viz-0 .bar {
-  background-color: #005db7; }
-
-.tone-viz-1 .bar {
-  background-color: #0077ea; }
-
-.tone-viz-2 .bar {
-  background-color: dodgerblue; }
-
-.tone-viz-3 .bar {
-  background-color: #51a9ff; }
+  .viz-area canvas {
+    display: block;
+    margin: auto; }
 
 /*# sourceMappingURL=style.css.map */

@@ -3,25 +3,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const MAX_VOL = 0.5;
+const PI2     = 2 * Math.PI;
+
+/*******************************************************************************
+ *
+ * Animates tones.
+ * @class ToneViz
+ * @extends React.Component
+ *
+ ******************************************************************************/
 export default class ToneViz extends React.Component {
 
+ /**
+  * Constructor.
+  * @method constructor
+  * @param props {Object}
+  */
   constructor (props) {
 
     super(props);
 
-    let lastValues = [];
-    for (let i = 0; i < props.values.length; i++) {
-      lastValues.push(0);
-    }
-
     this.state = {
-      lastValues : lastValues,
+      lastValues : props.values,
       values     : props.values
     };
 
     this.animate = this.animate.bind(this);
   }
 
+ /**
+  * Lifecycle method to restart animation.
+  * @method componentWillReceiveProps
+  * @param nextProps {Object}
+  */
   componentWillReceiveProps (nextProps) {
     if (this.props.values !== nextProps.values) {
       this.setState({
@@ -34,18 +49,47 @@ export default class ToneViz extends React.Component {
     }
   }
 
+ /**
+  * Animation loop.
+  * @method animate
+  * @param timestamp {Number} In milliseconds.
+  */
   animate (timestamp) {
 
     if (!this.start) {
       this.start = timestamp;
     }
 
-    const diff       = (timestamp - this.start) / this.props.interval;
+    const props      = this.props;
+    const diff       = (timestamp - this.start) / props.interval;
     const lastValues = this.state.lastValues;
-    const values     = this.state.values;
+    const ctx        = this.canvas.getContext('2d');
+    const rad        = 12;
+    const colors     = props.colors;
+    const minFreq    = Math.log(props.minFreq);
+    const maxFreq    = Math.log(props.maxFreq);
+    const height     = props.height;
+    const width      = props.width;
 
-    this.bars.forEach( (bar, i) => {
-      bar.style.opacity = 0.1 + 1.8 * (lastValues[i][1] + diff * (values[i][1] - lastValues[i][1]));
+    ctx.clearRect(0, 0, width, height);
+
+    this.state.values.forEach( (val, i) => {
+      ctx.fillStyle = colors[i];
+      val.forEach( (v, j) => {
+
+        const lv = lastValues[i][j];
+        let x = (Math.log(lv[0]) + diff * (Math.log(v[0]) - Math.log(lv[0])) - minFreq) / (maxFreq - minFreq);
+        let y = (lv[1] + diff * (v[1] - lv[1])) / MAX_VOL;
+        let r = 2 + y * (rad - 2);
+        x = x * 0.8 + 0.1;
+        x = x * width;
+        y = y * 0.6 + 0.2;
+        y = height * (1 - y);
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, PI2);
+        ctx.fill();
+        ctx.closePath();
+      });
     });
 
     if (this.props.on) {
@@ -56,37 +100,32 @@ export default class ToneViz extends React.Component {
     }
   }
 
+ /**
+  * Renders component.
+  * @method render
+  */
   render () {
-
     const props = this.props;
-    this.bars = [];
-
     return (
-      <div className={'tone-viz ' + props.className}>
-        {
-          this.state.values.map( (v, i) =>
-            <div
-              className="bar"
-              key={i}
-              ref={el => { this.bars[i] = el } }
-              style={{ width: props.width, height: 5, marginTop: 1 }}
-            />
-          )
-        }
-      </div>
+      <canvas width={props.width} height={props.height} ref={ el => { this.canvas = el; }} />
     );
   }
 
 }
 
-ToneViz.defaultProps = {
-  className: ''
-};
-
+/**
+ * Component property definitions.
+ * @property propTypes
+ * @type Object
+ * @static
+ */
 ToneViz.propTypes = {
-  className : PropTypes.string,
-  interval  : PropTypes.number.isRequired,
-  on        : PropTypes.bool.isRequired,
-  values    : PropTypes.array.isRequired,
-  width     : PropTypes.number.isRequired
+  colors   : PropTypes.array.isRequired,
+  height   : PropTypes.number.isRequired,
+  interval : PropTypes.number.isRequired,
+  minFreq  : PropTypes.number.isRequired,
+  maxFreq  : PropTypes.number.isRequired,
+  on       : PropTypes.bool.isRequired,
+  values   : PropTypes.array.isRequired,
+  width    : PropTypes.number.isRequired
 };

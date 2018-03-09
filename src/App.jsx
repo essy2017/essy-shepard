@@ -5,13 +5,24 @@ import React from 'react';
 import Output from './Output';
 import Tones from './Tones';
 import ToneViz from './ToneViz';
-import ToneViz2 from './ToneViz2';
 
 const COMPONENTS = 4;
 const OCTAVES    = 5;
 const DURATION   = 10 * OCTAVES;
 const INTERVAL   = DURATION / 24;
 const BASE_FREQ  = 55;
+const MAX_FREQ   = BASE_FREQ * Math.pow(2, OCTAVES + COMPONENTS - 1.9);
+
+const COLORS = [
+  'rgb(0,83,174)',
+  'rgb(0,108,231)',
+  'rgb(26,133,255)',
+  'rgb(71,159,255)',
+  'rgb(31,92,57)',
+  'rgb(41,130,79)',
+  'rgb(52,170,102)',
+  'rgb(80,193,128)'
+];
 
 /*******************************************************************************
  *
@@ -107,6 +118,7 @@ export default class App extends React.Component {
           <Tones
             ascending={true}
             baseFrequency={BASE_FREQ}
+            colors={COLORS}
             components={COMPONENTS}
             ctrlHeight={ctrlHeight}
             ctrlWidth={ctrlWidth}
@@ -142,36 +154,19 @@ export default class App extends React.Component {
           />
         </div>
         <div className="viz-area">
-
-          <div className="viz-group" style={{ marginLeft: space, width: bigWidth }}>
-            <ToneViz2
-              height={100}
-              interval={INTERVAL * 1000}
-              on={state.on}
-              values={state.values}
-              width={2*bigWidth}
-            />
-          </div>
+          <ToneViz
+            colors={COLORS}
+            height={70}
+            interval={INTERVAL * 1000}
+            minFreq={BASE_FREQ}
+            maxFreq={MAX_FREQ}
+            on={state.on}
+            values={state.values}
+            width={2*bigWidth + 2*smallWidth + 3*space}
+          />
         </div>
       </div>
     );
   }
 
 }
-
-/*
-<div className="viz-group" style={{ marginLeft: space, width: bigWidth }}>
-  {
-    state.values.slice(0, COMPONENTS).map( (v, i) =>
-      <ToneViz
-        className={'tone-viz-' + i}
-        interval={INTERVAL * 1000}
-        key={i}
-        on={state.on}
-        values={state.values[i]}
-        width={ctrlWidth}
-      />
-    )
-  }
-</div>
-*/

@@ -152,6 +152,11 @@ export default class ToneControl extends React.Component {
       marginTop    : borderWidth,
       top          : pos,
       width        : knobWidth
+    };
+
+    if (props.color) {
+      styleFill.backgroundColor = props.color;
+      styleKnob.backgroundColor = props.color;
     }
 
     return (
@@ -185,6 +190,7 @@ ToneControl.defaultProps = {
  */
 ToneControl.propTypes = {
   className : PropTypes.string,
+  color     : PropTypes.string,
   domain    : PropTypes.array.isRequired,
   height    : PropTypes.number.isRequired,
   knobSize  : PropTypes.number,

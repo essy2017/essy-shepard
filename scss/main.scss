@@ -41,6 +41,7 @@ body, html {
     font-weight:300;
     padding:0.3rem 0 0.5rem 0;
     text-align:center;
+    text-transform:uppercase;
   }
   .controls {
     display:flex;
@@ -65,24 +66,23 @@ body, html {
 }
 
 .btn-area {
-  padding-bottom:1rem;
+  background-color:#444;
+  padding:0.8rem 0;
   text-align:center;
   button {
-    background-color:#777;
-    border:2px solid #777;
-    border-radius:0.3rem;
-    color:#eee;
-    font-size:1rem;
+    background-color:#999;
+    border:none;
+    font-size:0.8rem;
     outline:none;
-    padding:0.5rem 2rem;
+    padding:0.5rem 1rem;
+    text-transform:uppercase;
     width:100px;
     @include util-transition(all 0.15s ease-in);
     &:hover {
-      background-color:#555;
-      border-color:#555;
+      background-color:#aaa;
     }
     &:focus {
-      border-color:dodgerblue;
+      @include util-box-shadow(0 0 0 2px dodgerblue);
     }
   }
 }
@@ -137,107 +137,11 @@ body, html {
   }
 }
 
-.tones-up {
-  .tone-control-0 {
-    .knob, .fill {
-      background-color:darken(dodgerblue, 20%);
-    }
-  }
-  .tone-control-1 {
-    .knob, .fill {
-      background-color:darken(dodgerblue, 10%);
-    }
-  }
-  .tone-control-2 {
-    .knob, .fill {
-      background-color:dodgerblue;
-    }
-  }
-  .tone-control-3 {
-    .knob, .fill {
-      background-color:lighten(dodgerblue, 10%);
-    }
-  }
-}
-
-.tones-down {
-  .tone-control-0 {
-    .knob, .fill {
-      background-color:darken(mediumseagreen, 20%);
-    }
-  }
-  .tone-control-1 {
-    .knob, .fill {
-      background-color:darken(mediumseagreen, 10%);
-    }
-  }
-  .tone-control-2 {
-    .knob, .fill {
-      background-color:mediumseagreen;
-    }
-  }
-  .tone-control-3 {
-    .knob, .fill {
-      background-color:lighten(mediumseagreen, 10%);
-    }
-  }
-}
-
 .viz-area {
   padding-bottom:1rem;
   position:relative;
-  .box {
-    background-color:#fff;
-    border-radius:3px;
-    height:6px;
-    position:absolute;
-    width:6px;
-    &.box-0 {
-      background-color:darken(dodgerblue, 20%);
-    }
-    &.box-1 {
-      background-color:darken(dodgerblue, 10%);
-    }
-    &.box-2 {
-      background-color:dodgerblue;
-    }
-    &.box-3 {
-      background-color:lighten(dodgerblue, 10%);
-    }
-    &.box-4 {
-      background-color:darken(mediumseagreen, 20%);
-    }
-    &.box-5 {
-      background-color:darken(mediumseagreen, 10%);
-    }
-    &.box-6 {
-      background-color:mediumseagreen;
-    }
-    &.box-7 {
-      background-color:lighten(mediumseagreen, 10%);
-    }
+  canvas {
+    display:block;
+    margin:auto;
   }
-}
-
-.tone-viz {
-  .bar {
-    background-color:#fff;
-    opacity:0.1;
-  }
-}
-
-.tone-viz-0 .bar {
-  background-color:darken(dodgerblue, 20%);
-}
-
-.tone-viz-1 .bar {
-  background-color:darken(dodgerblue, 10%);
-}
-
-.tone-viz-2 .bar {
-  background-color:dodgerblue;
-}
-
-.tone-viz-3 .bar {
-  background-color:lighten(dodgerblue, 10%);
 }
