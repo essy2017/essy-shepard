@@ -76,7 +76,7 @@ export default class ToneControl extends React.Component {
   * @param e {Event}
   */
   handleMouseDownKnob (e) {
-    this.offsetY = e.pageY - e.target.offsetTop - window.scrollY + 2*this.props.borderWidth;
+    this.offsetY = e.pageY - e.target.offsetTop + 2*this.props.borderWidth;
     window.addEventListener('mousemove', this.handleMouseMoveKnob, false);
     window.addEventListener('mouseup', this.handleMouseUpKnob, false);
   }

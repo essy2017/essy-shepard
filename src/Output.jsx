@@ -3,23 +3,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from './Button';
 import ToneControl from './ToneControl';
 
+/*******************************************************************************
+ *
+ * Wrapper for single ToneControl with label.
+ * @class Output
+ * @extends React.Component
+ *
+ ******************************************************************************/
 export default class Output extends React.Component {
 
+ /**
+  * Renders component.
+  * @method render
+  */
   render () {
     const props = this.props;
     return (
-      <div className="output">
-        <div className="label">Output</div>
+      <div className={'output ' + props.className} style={{ marginLeft: props.left, width: props.width }}>
+        <div className="label">{props.label}</div>
         <div className="controls">
           <ToneControl
-            className="tone-control-vol"
             domain={[0, 1]}
             height={props.ctrlHeight}
-            onChange={props.onChangeVolume}
-            value={props.volume}
+            onChange={props.onChange}
+            value={props.value}
             width={props.ctrlWidth}
           />
         </div>
@@ -30,14 +39,27 @@ export default class Output extends React.Component {
 }
 
 /**
+ * Default component property values.
+ * @property defaultProps
+ * @type Object
+ * @static
+ */
+Output.defaultProps = {
+  className: ''
+};
+
+/**
  * Component property definitions.
  * @property propTypes
  * @type Object
  * @static
  */
 Output.propTypes = {
-  ctrlHeight     : PropTypes.number.isRequired,
-  ctrlWidth      : PropTypes.number.isRequired,
-  onChangeVolume : PropTypes.func.isRequired,
-  volume         : PropTypes.number.isRequired
+  className  : PropTypes.string,
+  ctrlHeight : PropTypes.number.isRequired,
+  ctrlWidth  : PropTypes.number.isRequired,
+  left       : PropTypes.number.isRequired,
+  onChange   : PropTypes.func.isRequired,
+  value      : PropTypes.number.isRequired,
+  width      : PropTypes.number.isRequired
 };

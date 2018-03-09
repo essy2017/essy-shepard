@@ -119,15 +119,20 @@ export default class OscillatorGroup {
   * @param time {Number}
   */
   step (time) {
+
+    let vals = [];
+
     time = time + this.interval;
+
     this.oscs.forEach( d => {
-      const t = (time + d.phase) % this.duration;
-      d.rampToValues(
-        time,
-        this.getFreq(this.baseFreq, t, this.duration / this.octaves),
-        this.getVol(t, 0.5, this.duration / 2, 0.2)
-      );
+      const t    = (time + d.phase) % this.duration;
+      const freq = this.getFreq(this.baseFreq, t, this.duration / this.octaves);
+      const vol  = this.getVol(t, 0.5, this.duration / 2, 0.2);
+      d.rampToValues(time, freq, vol);
+      vals.push([freq, vol]);
     });
+
+    return vals;
   }
 
 }
