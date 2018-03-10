@@ -6,6 +6,9 @@ import Output from './Output';
 import Tones from './Tones';
 import ToneViz from './ToneViz';
 
+const MAX_WIDTH = 800;
+
+
 const COMPONENTS = 4;
 const OCTAVES    = 5;
 const DURATION   = 10 * OCTAVES;
@@ -13,15 +16,20 @@ const INTERVAL   = DURATION / 24;
 const BASE_FREQ  = 55;
 const MAX_FREQ   = BASE_FREQ * Math.pow(2, OCTAVES + COMPONENTS - 1.9);
 
+const MIN_DURATION = 6 * OCTAVES;
+const MAX_DURATION = 14 * OCTAVES;
+
+
 const COLORS = [
-  'rgb(0,83,174)',
-  'rgb(0,108,231)',
-  'rgb(26,133,255)',
-  'rgb(71,159,255)',
-  'rgb(31,92,57)',
-  'rgb(41,130,79)',
-  'rgb(52,170,102)',
-  'rgb(80,193,128)'
+  'rgb(0,115,153)',
+  'rgb(0,153,204)',
+  'rgb(0,191,255)',
+  'rgb(51,204,255)',
+
+  'rgb(107,179,0)',
+  'rgb(122,204,0)',
+  'rgb(153,255,0)',
+  'rgb(184,255,77)'
 ];
 
 /*******************************************************************************
@@ -51,15 +59,35 @@ export default class App extends React.Component {
     }
 
     this.state = {
-      on     : false,
-      reverb : 0.5,
-      values : vals,
-      volume : 0.25,
-      width  : 650
+      duration : 10 * OCTAVES,
+      on       : false,
+      reverb   : 0.5,
+      values   : vals,
+      volume   : 0.25,
+      width    : 650
     };
 
     this.handleClickOnOff = this.handleClickOnOff.bind(this);
     this.handleLoop       = this.handleLoop.bind(this);
+  }
+
+ /**
+  * Sets width based on parent node width.
+  * @method setWidth
+  */
+  setWidth () {
+    this.setState({
+      width: Math.min(MAX_WIDTH, this.el.parentNode.offsetWidth)
+    });
+  }
+
+ /**
+  * Lifecycle method to set width.
+  * @method componentDidMount
+  */
+  componentDidMount () {
+    this.setWidth();
+    window.addEventListener('resize', this.setWidth.bind(this));
   }
 
  /**
@@ -79,13 +107,31 @@ export default class App extends React.Component {
   * @param value {Number} New value.
   */
   handleChange (prop, value) {
+    if (prop === 'duration') {
+      value = MIN_DURATION + (1 - value) * (MAX_DURATION - MIN_DURATION);
+    }
     this.setState({
       [prop]: value
     });
   }
 
+ /**
+  * Handler for loop events in Tones.
+  * @method handleLoop
+  * @param vals {Number[][]} Arrays of arrays of [frequency, volume].
+  */
   handleLoop (vals) {
     this.setState({ values: vals });
+  }
+
+ /**
+  * Converts duration to speed in [0, 1] domain.
+  * @method durationToSpeed
+  * @param duration {Number}
+  * @return {Number} Speed.
+  */
+  durationToSpeed (duration) {
+    return 1 - (duration - MIN_DURATION) / (MAX_DURATION - MIN_DURATION);
   }
 
  /**
@@ -96,13 +142,13 @@ export default class App extends React.Component {
 
     const state      = this.state;
     const width      = state.width;
-    const nControls  = 4;
+    const nControls  = 5;
     const ctrlHeight = width / 3.5;
     let ctrlWidth;
 
     let space      = 4;
     let smallWidth = 10;
-    let bigWidth   = (100 - 2*smallWidth - (nControls + 1) * space) / 2;
+    let bigWidth   = (100 - 3*smallWidth - (nControls + 1) * space) / 2;
 
     space      = width * space / 100;
     smallWidth = width * smallWidth / 100;
@@ -110,7 +156,7 @@ export default class App extends React.Component {
     ctrlWidth  = smallWidth / 3.5;
 
     return (
-      <div className="shepard" style={{ width: state.width }}>
+      <div className="shepard" style={{ width: state.width }} ref={ el => { this.el = el }}>
         <div className="btn-area">
           <button onClick={this.handleClickOnOff}>{state.on ? 'Stop' : 'Start'}</button>
         </div>
@@ -122,7 +168,7 @@ export default class App extends React.Component {
             components={COMPONENTS}
             ctrlHeight={ctrlHeight}
             ctrlWidth={ctrlWidth}
-            duration={DURATION}
+            duration={state.duration}
             interval={INTERVAL}
             octaves={OCTAVES}
             on={state.on}
@@ -131,6 +177,16 @@ export default class App extends React.Component {
             reverb={state.reverb}
             space={space}
             volume={state.volume}
+          />
+          <Output
+            className="speed"
+            ctrlHeight={ctrlHeight}
+            ctrlWidth={ctrlWidth}
+            label="Speed"
+            left={space}
+            onChange={this.handleChange.bind(this, 'duration')}
+            value={this.durationToSpeed(state.duration)}
+            width={smallWidth}
           />
           <Output
             className="reverb"

@@ -115,13 +115,18 @@ body, html {
   }
 }
 
+.speed {
+  .tone-control {
+    .knob, .fill {
+      background-color:fuchsia;
+    }
+  }
+}
+
 .reverb {
   .tone-control {
     .knob, .fill {
-      background-color:violet;
-    }
-    .knob:hover {
-      background-color:lighten(violet, 5%);
+      background-color:orange;
     }
   }
 }
@@ -129,11 +134,8 @@ body, html {
 .volume {
   .tone-control {
     .knob, .fill {
-      background-color:orange;
+      background-color:orangered;
     }
-  }
-  .knob:hover {
-    background-color:lighten(orange, 5%);
   }
 }
 

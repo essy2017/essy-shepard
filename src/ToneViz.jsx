@@ -41,7 +41,7 @@ export default class ToneViz extends React.Component {
     this.maxFreq   = Math.log(props.maxFreq);
     this.freqRange = this.maxFreq - this.minFreq;
 
-    this.animate = this.animate.bind(this);
+    this.animate   = this.animate.bind(this);
   }
 
  /**
@@ -71,8 +71,7 @@ export default class ToneViz extends React.Component {
         values     : nextProps.values
       });
       this.start = null;
-      //window.cancelAnimationFrame(this.animationId);
-      this.animationId = window.requestAnimationFrame(this.animate);
+      window.requestAnimationFrame(this.animate);
     }
   }
 

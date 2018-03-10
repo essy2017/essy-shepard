@@ -26,7 +26,7 @@ export default class OscillatorGroup {
   constructor (config) {
 
     const baseFreq = this.baseFreq = config.baseFreq;
-    const duration = this.duration = config.duration;
+    const duration = this._duration = config.duration;
     const octaves  = this.octaves  = config.octaves;
 
     this.interval  = config.interval;
@@ -42,6 +42,16 @@ export default class OscillatorGroup {
       this.oscs[i] = new Oscillator(phase, config.type, freq, vol);
     }
 
+  }
+
+ /**
+  * Setter for duration.
+  * @method duration
+  * @param duration {Number}
+  */
+  set duration (duration) {
+    this._duration = duration;
+    this.oscs.forEach( (osc, i) => osc.phase = duration * i / this.octaves );
   }
 
  /**
@@ -125,9 +135,9 @@ export default class OscillatorGroup {
     time = time + this.interval;
 
     this.oscs.forEach( d => {
-      const t    = (time + d.phase) % this.duration;
-      const freq = this.getFreq(this.baseFreq, t, this.duration / this.octaves);
-      const vol  = this.getVol(t, 0.5, this.duration / 2, 0.2);
+      const t    = (time + d.phase) % this._duration;
+      const freq = this.getFreq(this.baseFreq, t, this._duration / this.octaves);
+      const vol  = this.getVol(t, 0.5, this._duration / 2, 0.2);
       d.rampToValues(time, freq, vol);
       vals.push([freq, vol]);
     });

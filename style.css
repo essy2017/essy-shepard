@@ -104,15 +104,14 @@ body, html {
     opacity: 0.8;
     position: absolute; }
 
+.speed .tone-control .knob, .speed .tone-control .fill {
+  background-color: fuchsia; }
+
 .reverb .tone-control .knob, .reverb .tone-control .fill {
-  background-color: violet; }
-.reverb .tone-control .knob:hover {
-  background-color: #f198f1; }
+  background-color: orange; }
 
 .volume .tone-control .knob, .volume .tone-control .fill {
-  background-color: orange; }
-.volume .knob:hover {
-  background-color: #ffae1a; }
+  background-color: orangered; }
 
 .viz-area {
   padding-bottom: 1rem;

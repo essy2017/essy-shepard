@@ -68,6 +68,9 @@ export default class Tones extends React.Component {
     if (this.props.on && !nextProps.on) {
       this.stopLoop();
     }
+    if (this.props.duration !== nextProps.duration) {
+      this.oscGroups.forEach( g => g.duration = nextProps.duration );
+    }
     if (this.props.volume !== nextProps.volume) {
       this.gainOut.gain.value = nextProps.volume;
     }
