@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 const MAX_VOL = 0.5;
 const PI2     = 2 * Math.PI;
+const MAX_RAD = 12;
+const MIN_RAD = 2;
 
 const NUM_LEGS     = 3;
 const LEG_INTERVAL = 1200;
@@ -34,6 +36,10 @@ export default class ToneViz extends React.Component {
     };
 
     this.resetLegs(props.values);
+
+    this.minFreq   = Math.log(props.minFreq);
+    this.maxFreq   = Math.log(props.maxFreq);
+    this.freqRange = this.maxFreq - this.minFreq;
 
     this.animate = this.animate.bind(this);
   }
@@ -65,7 +71,7 @@ export default class ToneViz extends React.Component {
         values     : nextProps.values
       });
       this.start = null;
-      window.cancelAnimationFrame(this.animationId);
+      //window.cancelAnimationFrame(this.animationId);
       this.animationId = window.requestAnimationFrame(this.animate);
     }
   }
@@ -88,12 +94,6 @@ export default class ToneViz extends React.Component {
     const diff       = (timestamp - this.start) / props.interval;
     const lastValues = this.state.lastValues;
     const ctx        = this.canvas.getContext('2d');
-    const rad        = 12;
-    const colors     = props.colors;
-    const minFreq    = Math.log(props.minFreq);
-    const maxFreq    = Math.log(props.maxFreq);
-    const height     = props.height;
-    const width      = props.width;
 
     let legs      = this.legs;
     let createLeg = false;
@@ -103,22 +103,23 @@ export default class ToneViz extends React.Component {
       createLeg = true;
     }
 
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, props.width, props.height);
 
     this.state.values.forEach( (val, i) => {
 
-      ctx.fillStyle = colors[i];
+      ctx.fillStyle = props.colors[i];
 
       val.forEach( (v, j) => {
 
         const lv = lastValues[i][j];
-        let x = (Math.log(lv[0]) + diff * (Math.log(v[0]) - Math.log(lv[0])) - minFreq) / (maxFreq - minFreq);
+        const logLv0 = Math.log(lv[0]);
+        let x = (logLv0 + diff * (Math.log(v[0]) - logLv0) - this.minFreq) / this.freqRange;
         let y = (lv[1] + diff * (v[1] - lv[1])) / MAX_VOL;
-        let r = 2 + y * (rad - 2);
+        let r = MIN_RAD + y * (MAX_RAD - MIN_RAD);
         x = x * 0.8 + 0.1;
-        x = x * width;
+        x = x * props.width;
         y = y * 0.6 + 0.2;
-        y = height * (1 - y);
+        y = props.height * (1 - y);
 
         // Create leg if indicated.
         if (createLeg) {
@@ -131,7 +132,7 @@ export default class ToneViz extends React.Component {
         // Render legs.
         legs[i][j].forEach( leg => {
           ctx.beginPath();
-          ctx.globalAlpha = 1 - (timestamp - leg[3]) / LEG_DURATION;
+          ctx.globalAlpha = 1 - Math.min(1, (timestamp - leg[3]) / LEG_DURATION);
           ctx.arc(leg[0], leg[1], leg[2], 0, PI2);
           ctx.fill();
           ctx.closePath();

@@ -3,6 +3,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const isTouch   = 'ontouchstart' in window;
+const MOUSEMOVE = isTouch ? 'touchmove' : 'mousemove';
+const MOUSEUP   = isTouch ? 'touchend' : 'mouseup';
+
 /*******************************************************************************
  *
  * A vertical slide control for tone.
@@ -77,8 +81,8 @@ export default class ToneControl extends React.Component {
   */
   handleMouseDownKnob (e) {
     this.offsetY = e.pageY - e.target.offsetTop + 2*this.props.borderWidth;
-    window.addEventListener('mousemove', this.handleMouseMoveKnob, false);
-    window.addEventListener('mouseup', this.handleMouseUpKnob, false);
+    window.addEventListener(MOUSEMOVE, this.handleMouseMoveKnob, false);
+    window.addEventListener(MOUSEUP, this.handleMouseUpKnob, false);
   }
 
  /**
@@ -96,8 +100,8 @@ export default class ToneControl extends React.Component {
   * @param e {Event}
   */
   handleMouseUpKnob (e) {
-    window.removeEventListener('mousemove', this.handleMouseMoveKnob);
-    window.removeEventListener('mouseup', this.handleMouseUpKnob);
+    window.removeEventListener(MOUSEMOVE, this.handleMouseMoveKnob);
+    window.removeEventListener(MOUSEUP, this.handleMouseUpKnob);
   }
 
  /**
@@ -163,7 +167,7 @@ export default class ToneControl extends React.Component {
       <div className={'tone-control ' + props.className} style={this.styles.wrap}>
         <div className="fill" style={styleFill}></div>
         <div className="track" style={this.styles.track}></div>
-        <div className="knob" style={styleKnob} onMouseDown={this.handleMouseDownKnob}></div>
+        <div className="knob" style={styleKnob} onMouseDown={this.handleMouseDownKnob} onTouchStart={this.handleMouseDownKnob}></div>
       </div>
     );
   }
