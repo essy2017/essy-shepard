@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const MAX_VOL = 0.5;
 const PI2     = 2 * Math.PI;
-const MAX_RAD = 12;
+const MAX_RAD = 6;
 const MIN_RAD = 2;
 
 const NUM_LEGS     = 3;
