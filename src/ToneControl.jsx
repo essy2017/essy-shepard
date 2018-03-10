@@ -3,10 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const isTouch   = 'ontouchstart' in window;
-const MOUSEMOVE = isTouch ? 'touchmove' : 'mousemove';
-const MOUSEUP   = isTouch ? 'touchend' : 'mouseup';
-
 /*******************************************************************************
  *
  * A vertical slide control for tone.
@@ -27,9 +23,8 @@ export default class ToneControl extends React.Component {
 
     this.setStyles(props);
 
-    this.handleMouseDownKnob = this.handleMouseDownKnob.bind(this);
-    this.handleMouseMoveKnob = this.handleMouseMoveKnob.bind(this);
-    this.handleMouseUpKnob   = this.handleMouseUpKnob.bind(this);
+    this.handleMove = this.handleMove.bind(this);
+    this.handleEnd = this.handleEnd.bind(this);
   }
 
  /**
@@ -75,33 +70,46 @@ export default class ToneControl extends React.Component {
   }
 
  /**
-  * Handler for mousedown events on knob.
-  * @method handleMouseDownKnob
+  * Handler for drag start event.
+  * @method handleStart
+  * @param isTouch {Boolean}
   * @param e {Event}
   */
-  handleMouseDownKnob (e) {
-    this.offsetY = e.pageY - e.target.offsetTop + 2*this.props.borderWidth;
-    document.addEventListener(MOUSEMOVE, this.handleMouseMoveKnob, false);
-    document.addEventListener(MOUSEUP, this.handleMouseUpKnob, false);
+  handleStart (isTouch, e) {
+
+    e.preventDefault();
+
+    const pageY = isTouch ? e.targetTouches[0].pageY : e.pageY;
+
+    this.eventMove = isTouch ? 'touchmove' : 'mousemove';
+    this.eventEnd  = isTouch ? 'touchend' : 'mouseup';
+
+    this.offsetY = pageY - e.target.offsetTop + 2*this.props.borderWidth;
+    this.isTouch = isTouch;
+
+    document.addEventListener(this.eventMove, this.handleMove, false);
+    document.addEventListener(this.eventEnd, this.handleEnd, false);
   }
 
  /**
-  * Handler for mousemove events during knob drag.
-  * @method handleMouseMoveKnob
+  * Handler for move events on drag.
+  * @method handleMove
   * @param e {Event}
   */
-  handleMouseMoveKnob (e) {
-    this.props.onChange(this.valueFromY(e.pageY - this.offsetY));
+  handleMove (e) {
+    e.preventDefault();
+    const pageY = this.isTouch ? e.targetTouches[0].pageY : e.pageY;
+    this.props.onChange(this.valueFromY(pageY - this.offsetY));
   }
 
  /**
-  * Handler for mouseup events during knob drag.
-  * @method handleMouseUpKnob
+  * Handler for end events on drag.
+  * @method handleEnd
   * @param e {Event}
   */
-  handleMouseUpKnob (e) {
-    document.removeEventListener(MOUSEMOVE, this.handleMouseMoveKnob);
-    document.removeEventListener(MOUSEUP, this.handleMouseUpKnob);
+  handleEnd (e) {
+    document.removeEventListener(this.eventMove, this.handleMove);
+    document.removeEventListener(this.eventEnd, this.handleEnd);
   }
 
  /**
@@ -167,7 +175,7 @@ export default class ToneControl extends React.Component {
       <div className={'tone-control ' + props.className} style={this.styles.wrap}>
         <div className="fill" style={styleFill}></div>
         <div className="track" style={this.styles.track}></div>
-        <div className="knob" style={styleKnob} onMouseDown={this.handleMouseDownKnob} onTouchStart={this.handleMouseDownKnob}></div>
+        <div className="knob" style={styleKnob} onMouseDown={this.handleStart.bind(this, false)} onTouchStart={this.handleStart.bind(this, true)}></div>
       </div>
     );
   }
