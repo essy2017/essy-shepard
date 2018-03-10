@@ -6,9 +6,6 @@ import Output from './Output';
 import Tones from './Tones';
 import ToneViz from './ToneViz';
 
-const MAX_WIDTH = 800;
-
-
 const COMPONENTS = 4;
 const OCTAVES    = 5;
 const DURATION   = 10 * OCTAVES;
@@ -77,7 +74,7 @@ export default class App extends React.Component {
   */
   setWidth () {
     this.setState({
-      width: Math.min(MAX_WIDTH, this.el.parentNode.offsetWidth)
+      width: this.el.parentNode.offsetWidth
     });
   }
 
